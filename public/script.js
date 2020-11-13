@@ -44,16 +44,7 @@ navigator.mediaDevices
   
 
   })
-  //listening to user stram
-    
-    socket.on("user-connected", (userId) => {
-        //send user stream to others
-     connectToNewUser(userId,myVideoStream);
-    });
-    
-    socket.on('user-disconnected', userId => {
-      if (peers[userId]) peers[userId].close()
-    })
+  
     
 
 
@@ -67,6 +58,11 @@ const connectToNewUser = (userId,stream) => {
     call.on('stream',useVideoStream =>{
      addVideoStream(video,useVideoStream)
     })
+    call.on('close', () => {
+      video.remove()
+    })
+  
+    peers[userId] = call
 
 };
 //listening to peer connection
